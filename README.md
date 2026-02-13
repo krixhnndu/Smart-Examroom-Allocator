@@ -6,7 +6,7 @@
 
 ## Basic Details
 
-### Team Name: Tinkera
+### Team Name: TinkEra
 
 ### Team Members
 - Member 1: Nandana G L - SCMS School of Engineering & Technology

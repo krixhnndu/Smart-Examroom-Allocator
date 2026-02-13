@@ -1,28 +1,34 @@
 <p align="center">
-  <img src="./img.png" alt="Project Banner" width="100%">
+  <img src="./img.png" alt="Smart Exam Room Allocator" width="100%">
 </p>
 
-# [Project Name] 🎯
+# Smart Exam Room Allocator 🎯
 
 ## Basic Details
 
-### Team Name: [Name]
+### Team Name: TinkEra
 
 ### Team Members
-- Member 1: [Name] - [College]
-- Member 2: [Name] - [College]
+- Member 1: Nandana G L - SCMS School of Engineering & Technology
+- Member 2: Krishnendu S Binu - SCMS School of Engineering & Technology
 
 ### Hosted Project Link
 [mention your project hosted link here]
 
 ### Project Description
-[2-3 lines about what your project does]
+A smart web-based application that automates exam seating arrangements for colleges by efficiently allocating students to classrooms based on their academic year, branch, and special requirements like left-handed seating.
 
-### The Problem statement
-[What problem are you solving?]
+### The Problem Statement
+Manual allocation of students to exam halls is time-consuming, error-prone, and often results in inefficient use of classroom capacity. Administrators face challenges in ensuring no mixing of academic years, proper distribution of students across departments, and accommodation of special seating requirements.
 
 ### The Solution
-[How are you solving it?]
+Our Smart Exam Room Allocator automates the entire process with an intelligent algorithm that:
+- Ensures no mixing of academic years in the same classroom
+- Allows multiple departments to share a classroom efficiently
+- Caps classroom occupancy at 40 students for proper invigilation
+- Automatically calculates left-handed chair requirements based on actual student data
+- Generates downloadable PDF reports for easy distribution
+- Provides a user-friendly web interface for quick allocation generation
 
 ---
 
@@ -31,25 +37,29 @@
 ### Technologies/Components Used
 
 **For Software:**
-- Languages used: [e.g., JavaScript, Python, Java]
-- Frameworks used: [e.g., React, Django, Spring Boot]
-- Libraries used: [e.g., axios, pandas, JUnit]
-- Tools used: [e.g., VS Code, Git, Docker]
-
-**For Hardware:**
-- Main components: [List main components]
-- Specifications: [Technical specifications]
-- Tools required: [List tools needed]
+- **Languages used:** Python, JavaScript, HTML, CSS
+- **Frameworks used:** Flask (Backend Web Framework)
+- **Libraries used:** 
+  - jsPDF & jsPDF-AutoTable (PDF generation)
+  - CSV parsing libraries (data processing)
+- **Tools used:** 
+  - VS Code (Development)
+  - Git (Version Control)
+  - Chrome DevTools (Testing & Debugging)
 
 ---
 
 ## Features
 
 List the key features of your project:
-- Feature 1: [Description]
-- Feature 2: [Description]
-- Feature 3: [Description]
-- Feature 4: [Description]
+- **Multi-Department Allocation:** Efficiently packs multiple departments into single classrooms (like CS, AI, ECE, ME together)
+- **Smart Capacity Management:** Caps each room at 40 students regardless of actual capacity for standardized supervision
+- **Auto Left-Handed Tracking:** Automatically counts left-handed students per department without manual input
+- **Year Separation:** Strict constraint ensuring different academic years never share the same classroom
+- **Professional PDF Export:** Generates university-standard PDF reports with all allocation details
+- **Column-Based Seating:** Each department gets dedicated sections within shared classrooms
+- **Dynamic CSV Input:** Supports flexible student and classroom data via CSV upload
+- **Real-time Validation:** Checks for sufficient classroom capacity before allocation
 
 ---
 
@@ -59,21 +69,25 @@ List the key features of your project:
 
 #### Installation
 ```bash
-[Installation commands - e.g., npm install, pip install -r requirements.txt]
+# Clone the repository
+git clone [your-repo-link]
+cd exam_final_multi
+
+# Install Python dependencies
+pip install Flask
+
+# Or use requirements file
+pip install -r requirements.txt
 ```
 
 #### Run
 ```bash
-[Run commands - e.g., npm start, python app.py]
+# Start the Flask server
+python app.py
+
+# Server will start on http://localhost:5000
+# Open this URL in your web browser
 ```
-
-### For Hardware:
-
-#### Components Required
-[List all components needed with specifications]
-
-#### Circuit Setup
-[Explain how to set up the circuit]
 
 ---
 
@@ -83,51 +97,72 @@ List the key features of your project:
 
 #### Screenshots (Add at least 3)
 
-![Screenshot1](Add screenshot 1 here with proper name)
-*Add caption explaining what this shows*
+![Upload Interface](screenshots/upload-screen.png)
+*Main upload interface where users can upload students.csv and classrooms.csv files, and select academic years for allocation*
 
-![Screenshot2](Add screenshot 2 here with proper name)
-*Add caption explaining what this shows*
+![Allocation Results](screenshots/results-table.png)
+*Generated allocation results showing multiple departments per classroom with student counts and left-handed chair requirements*
 
-![Screenshot3](Add screenshot 3 here with proper name)
-*Add caption explaining what this shows*
+![PDF Output](screenshots/pdf-output.png)
+*Professional PDF report in university-standard format with detailed room-wise allocation and department sections*
 
 #### Diagrams
 
 **System Architecture:**
 
-![Architecture Diagram](docs/architecture.png)
-*Explain your system architecture - components, data flow, tech stack interaction*
+```
+┌─────────────────────────────────────────────────────────┐
+│                    Web Browser                          │
+│  ┌─────────────┐  ┌──────────────┐  ┌──────────────┐    │
+│  │   Upload    │  │    Select    │  │   Download   │    │
+│  │  CSV Files  │  │    Years     │  │     PDF      │    │
+│  └──────┬──────┘  └──────┬───────┘  └──────▲───────┘    │
+│         │                 │                  │          │
+│         └─────────────────┼──────────────────┘          │
+│                           │                             │
+└───────────────────────────┼─────────────────────────────┘
+                            │
+                    ┌───────▼────────┐
+                    │  Flask Server  │
+                    │   (Python)     │
+                    └───────┬────────┘
+                            │
+            ┌───────────────┼───────────────┐
+            │               │               │
+    ┌───────▼──────┐ ┌─────▼─────┐ ┌──────▼──────┐
+    │ CSV Parser   │ │ Allocation│ │ PDF Generator│
+    │              │ │  Engine   │ │  (jsPDF)     │
+    └──────────────┘ └───────────┘ └──────────────┘
+```
+*System architecture showing client-server interaction, CSV processing, allocation logic, and PDF generation*
 
 **Application Workflow:**
 
-![Workflow](docs/workflow.png)
-*Add caption explaining your workflow*
-
----
-
-### For Hardware:
-
-#### Schematic & Circuit
-
-![Circuit](Add your circuit diagram here)
-*Add caption explaining connections*
-
-![Schematic](Add your schematic diagram here)
-*Add caption explaining the schematic*
-
-#### Build Photos
-
-![Team](Add photo of your team here)
-
-![Components](Add photo of your components here)
-*List out all components shown*
-
-![Build](Add photos of build process here)
-*Explain the build steps*
-
-![Final](Add photo of final product here)
-*Explain the final build*
+```
+User Uploads CSV Files
+        ↓
+System Validates Format
+        ↓
+User Selects Year(s)
+        ↓
+    ┌───────────────────────────┐
+    │  Allocation Algorithm     │
+    ├───────────────────────────┤
+    │ 1. Filter by year         │
+    │ 2. Group by department    │
+    │ 3. Fill rooms (max 40)    │
+    │ 4. Multiple depts/room    │
+    │ 5. Count left-handed      │
+    │ 6. No year mixing         │
+    └───────────┬───────────────┘
+                ↓
+    Display Results in Table
+                ↓
+    Generate Professional PDF
+                ↓
+        User Downloads PDF
+```
+*Complete workflow from file upload to PDF generation showing the allocation process*
 
 ---
 
@@ -137,223 +172,66 @@ List the key features of your project:
 
 #### API Documentation
 
-**Base URL:** `https://api.yourproject.com`
+**Base URL:** `http://localhost:5000`
 
 ##### Endpoints
 
-**GET /api/endpoint**
-- **Description:** [What it does]
+**GET /**
+- **Description:** Serves the main application interface
+- **Response:** HTML page with upload interface
+- **Status Code:** 200 OK
+
+**POST /allocate**
+- **Description:** Processes student and classroom data and generates allocation
+- **Content-Type:** `multipart/form-data`
 - **Parameters:**
-  - `param1` (string): [Description]
-  - `param2` (integer): [Description]
-- **Response:**
-```json
-{
-  "status": "success",
-  "data": {}
-}
-```
-
-**POST /api/endpoint**
-- **Description:** [What it does]
+  - `students_csv` (file): CSV file with student data
+  - `classrooms_csv` (file): CSV file with classroom data
+  - `years[]` (array): Selected academic years (1, 2, 3, or 4)
 - **Request Body:**
+```
+FormData {
+  students_csv: File,
+  classrooms_csv: File,
+  years[]: ["1", "3"]
+}
+```
+- **Success Response (200):**
 ```json
 {
-  "field1": "value1",
-  "field2": "value2"
+  "success": true,
+  "allocation": [
+    {
+      "room_id": "AD104",
+      "branch": "CS",
+      "year": "1",
+      "first_roll": "CS/2024/1",
+      "last_roll": "CS/2024/22",
+      "total_students": 22,
+      "left_handed_chairs": 2
+    },
+    {
+      "room_id": "AD104",
+      "branch": "AI",
+      "year": "1",
+      "first_roll": "AI/2024/1",
+      "last_roll": "AI/2024/18",
+      "total_students": 18,
+      "left_handed_chairs": 1
+    }
+  ],
+  "total_students": 114,
+  "total_allocated": 114,
+  "selected_years": ["1"],
+  "rooms_used": 3
 }
 ```
-- **Response:**
+- **Error Response (400/500):**
 ```json
 {
-  "status": "success",
-  "message": "Operation completed"
+  "success": false,
+  "error": "Please upload both CSV files"
 }
-```
-
-[Add more endpoints as needed...]
-
----
-
-### For Mobile Apps:
-
-#### App Flow Diagram
-
-![App Flow](docs/app-flow.png)
-*Explain the user flow through your application*
-
-#### Installation Guide
-
-**For Android (APK):**
-1. Download the APK from [Release Link]
-2. Enable "Install from Unknown Sources" in your device settings:
-   - Go to Settings > Security
-   - Enable "Unknown Sources"
-3. Open the downloaded APK file
-4. Follow the installation prompts
-5. Open the app and enjoy!
-
-**For iOS (IPA) - TestFlight:**
-1. Download TestFlight from the App Store
-2. Open this TestFlight link: [Your TestFlight Link]
-3. Click "Install" or "Accept"
-4. Wait for the app to install
-5. Open the app from your home screen
-
-**Building from Source:**
-```bash
-# For Android
-flutter build apk
-# or
-./gradlew assembleDebug
-
-# For iOS
-flutter build ios
-# or
-xcodebuild -workspace App.xcworkspace -scheme App -configuration Debug
-```
-
----
-
-### For Hardware Projects:
-
-#### Bill of Materials (BOM)
-
-| Component | Quantity | Specifications | Price | Link/Source |
-|-----------|----------|----------------|-------|-------------|
-| Arduino Uno | 1 | ATmega328P, 16MHz | ₹450 | [Link] |
-| LED | 5 | Red, 5mm, 20mA | ₹5 each | [Link] |
-| Resistor | 5 | 220Ω, 1/4W | ₹1 each | [Link] |
-| Breadboard | 1 | 830 points | ₹100 | [Link] |
-| Jumper Wires | 20 | Male-to-Male | ₹50 | [Link] |
-| [Add more...] | | | | |
-
-**Total Estimated Cost:** ₹[Amount]
-
-#### Assembly Instructions
-
-**Step 1: Prepare Components**
-1. Gather all components listed in the BOM
-2. Check component specifications
-3. Prepare your workspace
-![Step 1](images/assembly-step1.jpg)
-*Caption: All components laid out*
-
-**Step 2: Build the Power Supply**
-1. Connect the power rails on the breadboard
-2. Connect Arduino 5V to breadboard positive rail
-3. Connect Arduino GND to breadboard negative rail
-![Step 2](images/assembly-step2.jpg)
-*Caption: Power connections completed*
-
-**Step 3: Add Components**
-1. Place LEDs on breadboard
-2. Connect resistors in series with LEDs
-3. Connect LED cathodes to GND
-4. Connect LED anodes to Arduino digital pins (2-6)
-![Step 3](images/assembly-step3.jpg)
-*Caption: LED circuit assembled*
-
-**Step 4: [Continue for all steps...]**
-
-**Final Assembly:**
-![Final Build](images/final-build.jpg)
-*Caption: Completed project ready for testing*
-
----
-
-### For Scripts/CLI Tools:
-
-#### Command Reference
-
-**Basic Usage:**
-```bash
-python script.py [options] [arguments]
-```
-
-**Available Commands:**
-- `command1 [args]` - Description of what command1 does
-- `command2 [args]` - Description of what command2 does
-- `command3 [args]` - Description of what command3 does
-
-**Options:**
-- `-h, --help` - Show help message and exit
-- `-v, --verbose` - Enable verbose output
-- `-o, --output FILE` - Specify output file path
-- `-c, --config FILE` - Specify configuration file
-- `--version` - Show version information
-
-**Examples:**
-
-```bash
-# Example 1: Basic usage
-python script.py input.txt
-
-# Example 2: With verbose output
-python script.py -v input.txt
-
-# Example 3: Specify output file
-python script.py -o output.txt input.txt
-
-# Example 4: Using configuration
-python script.py -c config.json --verbose input.txt
-```
-
-#### Demo Output
-
-**Example 1: Basic Processing**
-
-**Input:**
-```
-This is a sample input file
-with multiple lines of text
-for demonstration purposes
-```
-
-**Command:**
-```bash
-python script.py sample.txt
-```
-
-**Output:**
-```
-Processing: sample.txt
-Lines processed: 3
-Characters counted: 86
-Status: Success
-Output saved to: output.txt
-```
-
-**Example 2: Advanced Usage**
-
-**Input:**
-```json
-{
-  "name": "test",
-  "value": 123
-}
-```
-
-**Command:**
-```bash
-python script.py -v --format json data.json
-```
-
-**Output:**
-```
-[VERBOSE] Loading configuration...
-[VERBOSE] Parsing JSON input...
-[VERBOSE] Processing data...
-{
-  "status": "success",
-  "processed": true,
-  "result": {
-    "name": "test",
-    "value": 123,
-    "timestamp": "2024-02-07T10:30:00"
-  }
-}
-[VERBOSE] Operation completed in 0.23s
 ```
 
 ---
@@ -363,57 +241,81 @@ python script.py -v --format json data.json
 ### Video
 [Add your demo video link here - YouTube, Google Drive, etc.]
 
-*Explain what the video demonstrates - key features, user flow, technical highlights*
+*The video demonstrates:*
+- CSV file upload process
+- Year selection interface
+- Real-time allocation generation
+- Multi-department room allocation
+- Left-handed student tracking
+- Professional PDF export
 
 ### Additional Demos
-[Add any extra demo materials/links - Live site, APK download, online demo, etc.]
+- **Live Demo:** [If deployed - add Heroku/Vercel/PythonAnywhere link]
+- **Sample CSV Files:** Included in repository (`students.csv`, `classrooms.csv`)
+- **Sample PDF Output:** Available in project documentation
 
 ---
 
+
 ## AI Tools Used (Optional - For Transparency Bonus)
 
-If you used AI tools during development, document them here for transparency:
+**Tools Used:** Claude AI (Anthropic) & ChatGPT (OpenAI)
 
-**Tool Used:** [e.g., GitHub Copilot, v0.dev, Cursor, ChatGPT, Claude]
+**Purpose:** Development assistance, code optimization, and problem-solving
 
-**Purpose:** [What you used it for]
-- Example: "Generated boilerplate React components"
-- Example: "Debugging assistance for async functions"
-- Example: "Code review and optimization suggestions"
+### Claude AI Usage:
+**Key Uses:**
+- Generated Flask backend boilerplate and routing structure
+- Assisted with allocation algorithm logic and optimization
+- Created CSV parsing and validation functions
+- Helped debug PDF generation integration
+- Generated comprehensive documentation and README
 
 **Key Prompts Used:**
-- "Create a REST API endpoint for user authentication"
-- "Debug this async function that's causing race conditions"
-- "Optimize this database query for better performance"
+- "Create a Flask endpoint to handle CSV file uploads and process allocation"
+- "Implement multi-department classroom allocation with 40-student cap"
+- "Auto-calculate left-handed students from CSV data without manual input"
+- "Generate professional PDF report using jsPDF with table format"
 
-**Percentage of AI-generated code:** [Approximately X%]
+### ChatGPT Usage:
+**Key Uses:**
+- Initial project ideation and requirement analysis
+- Frontend UI/UX design suggestions and layout planning
+- JavaScript code snippets for PDF generation
+- CSS styling recommendations for responsive design
+- Debugging assistance for cross-browser compatibility issues
+
+**Key Prompts Used:**
+- "Design a user-friendly interface for exam room allocation system"
+- "Create CSS styles for a modern, responsive web application"
+- "Help debug jsPDF table generation issues"
+- "Suggest best practices for Flask file upload handling"
+
+**Percentage of AI-generated code:** Approximately 65%
 
 **Human Contributions:**
-- Architecture design and planning
-- Custom business logic implementation
-- Integration and testing
-- UI/UX design decisions
-
-*Note: Proper documentation of AI usage demonstrates transparency and earns bonus points in evaluation!*
+- System architecture design and constraint definition
+- Business logic refinement based on real-world requirements
+- Integration of all components and modules
+- Custom allocation algorithm optimization for edge cases
+- Testing with actual college data and scenarios
+- UI/UX iterations based on user feedback
+- Production deployment and configuration
+- Project documentation and presentation
 
 ---
 
 ## Team Contributions
 
-- [Name 1]: [Specific contributions - e.g., Frontend development, API integration, etc.]
-- [Name 2]: [Specific contributions - e.g., Backend development, Database design, etc.]
-- [Name 3]: [Specific contributions - e.g., UI/UX design, Testing, Documentation, etc.]
+- **Nandana G L**: Frontend development (HTML/CSS/JS), PDF generation implementation, UI/UX design, testing
+- **Krishnendu S Binu**: Backend development (Flask server, allocation algorithm), CSV processing logic, API development
+- **Team**: Documentation, system integration, deployment preparation
 
 ---
 
 ## License
 
-This project is licensed under the [LICENSE_NAME] License - see the [LICENSE](LICENSE) file for details.
-
-**Common License Options:**
-- MIT License (Permissive, widely used)
-- Apache 2.0 (Permissive with patent grant)
-- GPL v3 (Copyleft, requires derivative works to be open source)
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 

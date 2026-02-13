@@ -47,7 +47,6 @@ let examTimeFinal = '';
 // ================= GENERATE ALLOCATION =================
 generateBtn.addEventListener('click', async () => {
 
-    // --------- BASIC VALIDATION ---------
     if (!studentsInput.files.length || !classroomsInput.files.length) {
         showError('Please upload both CSV files');
         return;
@@ -58,13 +57,11 @@ generateBtn.addEventListener('click', async () => {
         return;
     }
 
-    // --------- EXAM DATE & TIME HANDLING ---------
     const datePicker = document.getElementById('exam-date-picker')?.value;
     const manualDate = document.getElementById('exam-date-manual')?.value.trim();
     const startTime = document.getElementById('start-time')?.value;
     const endTime = document.getElementById('end-time')?.value;
 
-    // Choose manual date > calendar date
     if (manualDate) {
         const dateRegex = /^\d{2}\/\d{2}\/\d{4}$/;
         if (!dateRegex.test(manualDate)) {
@@ -91,23 +88,17 @@ generateBtn.addEventListener('click', async () => {
 
     examTimeFinal = `${formatTime(startTime)} - ${formatTime(endTime)}`;
 
-    // --------- UI STATE ---------
     errorMessage.style.display = 'none';
     resultsSection.style.display = 'none';
     loading.style.display = 'block';
 
-    // --------- FORM DATA ---------
     const formData = new FormData();
     formData.append('students_csv', studentsInput.files[0]);
     formData.append('classrooms_csv', classroomsInput.files[0]);
     selectedYears.forEach(year => formData.append('years[]', year));
 
     try {
-        const response = await fetch('/allocate', {
-            method: 'POST',
-            body: formData
-        });
-
+        const response = await fetch('/allocate', { method: 'POST', body: formData });
         const result = await response.json();
         loading.style.display = 'none';
 
@@ -127,24 +118,27 @@ generateBtn.addEventListener('click', async () => {
 function showError(message) {
     errorMessage.textContent = message;
     errorMessage.style.display = 'block';
-    setTimeout(() => {
-        errorMessage.style.display = 'none';
-    }, 5000);
+    setTimeout(() => errorMessage.style.display = 'none', 5000);
 }
 
-// ================= DISPLAY RESULTS =================
+// ================= GROUP BY ROOM (UI MERGE) =================
+function groupByRoom(allocation) {
+    const map = {};
+    allocation.forEach(r => {
+        if (!map[r.room_id]) map[r.room_id] = [];
+        map[r.room_id].push(r);
+    });
+    return map;
+}
+
+// ================= DISPLAY RESULTS (WEB UI MERGE) =================
 function displayResults(result) {
 
     document.getElementById('total-halls').textContent = result.rooms_used;
     document.getElementById('total-students').textContent = result.total_allocated;
-
-    // Display exam date in UI
     document.getElementById('exam-date').textContent = examDateFinal;
-
-    // Update PDF header values
-    document.getElementById("pdf-date").textContent = examDateFinal;
-    document.getElementById("pdf-time").textContent = examTimeFinal;
-
+    document.getElementById('pdf-date').textContent = examDateFinal;
+    document.getElementById('pdf-time').textContent = examTimeFinal;
 
     let tableHTML = `
         <table>
@@ -160,16 +154,29 @@ function displayResults(result) {
             <tbody>
     `;
 
-    result.allocation.forEach(room => {
-        tableHTML += `
-            <tr>
-                <td>${room.room_id}</td>
-                <td>${room.branch}</td>
-                <td>${room.first_roll} to ${room.last_roll}</td>
-                <td>${room.total_students}</td>
-                <td>${room.left_handed_chairs || ''}</td>
-            </tr>
-        `;
+    const grouped = groupByRoom(result.allocation);
+
+    Object.keys(grouped).forEach(roomId => {
+        const rows = grouped[roomId];
+
+        rows.forEach((row, index) => {
+            tableHTML += `<tr>`;
+
+            if (index === 0) {
+                tableHTML += `
+                    <td class="room-cell" rowspan="${rows.length}">
+                        ${roomId}
+                    </td>
+                `;
+            }
+
+            tableHTML += `
+                <td>${row.branch}</td>
+                <td>${row.first_roll} to ${row.last_roll}</td>
+                <td>${row.total_students}</td>
+                <td>${row.left_handed_chairs || ''}</td>
+            </tr>`;
+        });
     });
 
     tableHTML += `</tbody></table>`;
@@ -179,16 +186,13 @@ function displayResults(result) {
     resultsSection.scrollIntoView({ behavior: 'smooth' });
 }
 
-// ================= PDF DOWNLOAD =================
-const downloadPdfBtn = document.getElementById('download-pdf-btn');
-
-downloadPdfBtn.addEventListener('click', () => {
+// ================= PDF DOWNLOAD (VISUAL MERGE) =================
+document.getElementById('download-pdf-btn').addEventListener('click', () => {
     if (!currentAllocationData) return;
 
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
 
-    // HEADER
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(16);
     doc.text('SCMS SCHOOL OF ENGINEERING AND TECHNOLOGY', 105, 15, { align: 'center' });
@@ -199,7 +203,6 @@ downloadPdfBtn.addEventListener('click', () => {
     doc.setFontSize(14);
     doc.text('Internal Examination - Seating Arrangement', 105, 30, { align: 'center' });
 
-    // DATE & TIME
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(10);
     doc.text(`DATE: ${examDateFinal}`, 14, 40);
@@ -207,14 +210,23 @@ downloadPdfBtn.addEventListener('click', () => {
     doc.text(`Total Halls: ${currentAllocationData.rooms_used}`, 120, 40);
     doc.text(`Total Students: ${currentAllocationData.total_allocated}`, 120, 46);
 
-    // TABLE DATA
-    const tableData = currentAllocationData.allocation.map(room => [
-        room.room_id,
-        room.branch,
-        `${room.first_roll} to ${room.last_roll}`,
-        room.total_students.toString(),
-        room.left_handed_chairs ? room.left_handed_chairs.toString() : ''
-    ]);
+    // ===== VISUAL ROOM MERGE FOR PDF =====
+    const tableData = [];
+    let lastRoom = null;
+
+    currentAllocationData.allocation.forEach(row => {
+        const sameRoom = row.room_id === lastRoom;
+
+        tableData.push([
+            sameRoom ? '' : row.room_id,
+            row.branch,
+            `${row.first_roll} to ${row.last_roll}`,
+            row.total_students.toString(),
+            row.left_handed_chairs ? row.left_handed_chairs.toString() : ''
+        ]);
+
+        lastRoom = row.room_id;
+    });
 
     doc.autoTable({
         head: [['Room No.', 'Dept./Subj.', 'Roll No.', 'Total Students', 'Left-Handed Chairs']],
@@ -222,7 +234,12 @@ downloadPdfBtn.addEventListener('click', () => {
         startY: 55,
         theme: 'grid',
         styles: { fontSize: 9, cellPadding: 3 },
-        headStyles: { fillColor: [102, 126, 234], textColor: 255 }
+        headStyles: { fillColor: [102, 126, 234], textColor: 255 },
+        didParseCell: function (data) {
+            if (data.column.index === 0 && data.cell.raw === '') {
+                data.cell.styles.lineWidth = { top: 0, right: 1, bottom: 1, left: 1 };
+            }
+        }
     });
 
     const finalY = doc.lastAutoTable.finalY || 55;

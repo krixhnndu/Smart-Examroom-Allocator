@@ -6,10 +6,19 @@ from datetime import datetime
 app = Flask(__name__)
 
 def parse_csv(file_content):
-    """Parse CSV file content and return list of dictionaries"""
     csv_file = StringIO(file_content)
     reader = csv.DictReader(csv_file)
-    return list(reader)
+
+    # 🔥 CLEAN HEADER KEYS (fix RoomID error)
+    reader.fieldnames = [h.strip().replace('\ufeff', '') for h in reader.fieldnames]
+
+    rows = []
+    for row in reader:
+        clean_row = {k.strip().replace('\ufeff', ''): v for k, v in row.items()}
+        rows.append(clean_row)
+
+    return rows
+
 
 def allocate_students_updated(students, classrooms, selected_years):
     """

@@ -294,7 +294,8 @@ header p {
 
 .allocation-table table {
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: separate;   /* 🔑 key change */
+    border-spacing: 0;
 }
 
 .allocation-table th {
@@ -302,11 +303,13 @@ header p {
     color: white;
     padding: 15px;
     border: 1px solid #5568d3;
+    border-left: 1px solid #5568d3;
 }
 
 .allocation-table td {
     padding: 12px 15px;
     border: 1px solid #ddd;
+    border-left: 1px solid #ddd;
 }
 
 .allocation-table tr:nth-child(even) {
@@ -321,8 +324,9 @@ header p {
     font-weight: bold;
     color: #667eea;
     background: #f8f9ff;
-    border-left: 1px solid #ddd;
-    border-right: 1px solid #ddd;
+    border-left: none;
+    align-content: center;
+    
 }
 
 /* Remove top border for merged continuation rows */

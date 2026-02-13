@@ -42,6 +42,7 @@ const allocationTable = document.getElementById('allocation-table');
 
 let currentAllocationData = null;
 let examDateFinal = '';
+let examDateWithDay = '';
 let examTimeFinal = '';
 
 // ================= GENERATE ALLOCATION =================
@@ -88,6 +89,10 @@ generateBtn.addEventListener('click', async () => {
 
     examTimeFinal = `${formatTime(startTime)} - ${formatTime(endTime)}`;
 
+    // ✅ ADD DAY
+    const examDay = getDayFromDate(examDateFinal);
+    examDateWithDay = `${examDateFinal} (${examDay})`;
+
     errorMessage.style.display = 'none';
     resultsSection.style.display = 'none';
     loading.style.display = 'block';
@@ -121,7 +126,7 @@ function showError(message) {
     setTimeout(() => errorMessage.style.display = 'none', 5000);
 }
 
-// ================= GROUP BY ROOM (UI MERGE) =================
+// ================= GROUP BY ROOM =================
 function groupByRoom(allocation) {
     const map = {};
     allocation.forEach(r => {
@@ -131,13 +136,13 @@ function groupByRoom(allocation) {
     return map;
 }
 
-// ================= DISPLAY RESULTS (WEB UI MERGE) =================
+// ================= DISPLAY RESULTS =================
 function displayResults(result) {
 
     document.getElementById('total-halls').textContent = result.rooms_used;
     document.getElementById('total-students').textContent = result.total_allocated;
-    document.getElementById('exam-date').textContent = examDateFinal;
-    document.getElementById('pdf-date').textContent = examDateFinal;
+    document.getElementById('exam-date').textContent = examDateWithDay;
+    document.getElementById('pdf-date').textContent = examDateWithDay;
     document.getElementById('pdf-time').textContent = examTimeFinal;
 
     let tableHTML = `
@@ -145,7 +150,7 @@ function displayResults(result) {
             <thead>
                 <tr>
                     <th>Room No.</th>
-                    <th>Dept./Subj.</th>
+                    <th>Dept.</th>
                     <th>Roll No.</th>
                     <th>Total No. of Students</th>
                     <th>Left-Handed Chairs Required</th>
@@ -157,19 +162,11 @@ function displayResults(result) {
     const grouped = groupByRoom(result.allocation);
 
     Object.keys(grouped).forEach(roomId => {
-        const rows = grouped[roomId];
-
-        rows.forEach((row, index) => {
+        grouped[roomId].forEach((row, index) => {
             tableHTML += `<tr>`;
-
             if (index === 0) {
-                tableHTML += `
-                    <td class="room-cell" rowspan="${rows.length}">
-                        ${roomId}
-                    </td>
-                `;
+                tableHTML += `<td class="room-cell" rowspan="${grouped[roomId].length}">${roomId}</td>`;
             }
-
             tableHTML += `
                 <td>${row.branch}</td>
                 <td>${row.first_roll} to ${row.last_roll}</td>
@@ -186,7 +183,7 @@ function displayResults(result) {
     resultsSection.scrollIntoView({ behavior: 'smooth' });
 }
 
-// ================= PDF DOWNLOAD (VISUAL MERGE) =================
+// ================= PDF DOWNLOAD =================
 document.getElementById('download-pdf-btn').addEventListener('click', () => {
     if (!currentAllocationData) return;
 
@@ -196,55 +193,49 @@ document.getElementById('download-pdf-btn').addEventListener('click', () => {
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(16);
     doc.text('SCMS SCHOOL OF ENGINEERING AND TECHNOLOGY', 105, 15, { align: 'center' });
-
     doc.setFontSize(12);
     doc.text('APJ ABDUL KALAM TECHNOLOGICAL UNIVERSITY', 105, 22, { align: 'center' });
-
     doc.setFontSize(14);
     doc.text('Internal Examination - Seating Arrangement', 105, 30, { align: 'center' });
 
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(10);
-    doc.text(`DATE: ${examDateFinal}`, 14, 40);
+    doc.text(`DATE: ${examDateWithDay}`, 14, 40);
     doc.text(`TIME: ${examTimeFinal}`, 14, 46);
     doc.text(`Total Halls: ${currentAllocationData.rooms_used}`, 120, 40);
     doc.text(`Total Students: ${currentAllocationData.total_allocated}`, 120, 46);
 
-    // ===== VISUAL ROOM MERGE FOR PDF =====
     const tableData = [];
     let lastRoom = null;
 
     currentAllocationData.allocation.forEach(row => {
-        const sameRoom = row.room_id === lastRoom;
-
         tableData.push([
-            sameRoom ? '' : row.room_id,
+            row.room_id === lastRoom ? '' : row.room_id,
             row.branch,
             `${row.first_roll} to ${row.last_roll}`,
             row.total_students.toString(),
             row.left_handed_chairs ? row.left_handed_chairs.toString() : ''
         ]);
-
         lastRoom = row.room_id;
     });
 
     doc.autoTable({
-        head: [['Room No.', 'Dept./Subj.', 'Roll No.', 'Total Students', 'Left-Handed Chairs']],
+        head: [['Room No.', 'Dept.', 'Roll No.', 'Total Students', 'Left-Handed Chairs']],
         body: tableData,
         startY: 55,
         theme: 'grid',
-        styles: { fontSize: 9, cellPadding: 3 },
-        headStyles: { fillColor: [102, 126, 234], textColor: 255 },
-        didParseCell: function (data) {
+        styles: { fontSize: 9, cellPadding: 3, valign: 'middle' },
+        headStyles: { fillColor: [102, 126, 234], textColor: 255, halign: 'center' },
+        columnStyles: { 0: { halign: 'center' } },
+
+        didDrawCell(data) {
             if (data.column.index === 0 && data.cell.raw === '') {
-                data.cell.styles.lineWidth = { top: 0, right: 1, bottom: 1, left: 1 };
+                doc.setDrawColor(255, 255, 255);
+                doc.setLineWidth(1.2);
+                doc.line(data.cell.x, data.cell.y, data.cell.x + data.cell.width, data.cell.y);
             }
         }
     });
-
-    const finalY = doc.lastAutoTable.finalY || 55;
-    doc.setFontSize(8);
-    doc.text('NB: Students are advised to note the Exam Hall numbers.', 14, finalY + 10);
 
     doc.save(`seating_arrangement_${examDateFinal.replace(/\//g, '-')}.pdf`);
 });
@@ -256,4 +247,10 @@ function formatTime(time24) {
     const suffix = hour >= 12 ? 'PM' : 'AM';
     const hour12 = hour % 12 || 12;
     return `${hour12}:${m} ${suffix}`;
+}
+
+function getDayFromDate(dateStr) {
+    const [dd, mm, yyyy] = dateStr.split('/');
+    const dateObj = new Date(`${yyyy}-${mm}-${dd}`);
+    return dateObj.toLocaleDateString('en-GB', { weekday: 'long' });
 }

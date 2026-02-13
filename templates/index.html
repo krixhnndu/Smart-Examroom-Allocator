@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Exam Allocator - Updated</title>
+    <title>Smart Classroom Exam Allocation Generator</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
@@ -11,8 +11,8 @@
 <body>
     <div class="container">
         <header>
-            <h1>🎓 SMART EXAM ALLOCATOR</h1>
-            <p>Automated Seating Arrangement System</p>
+            <h1>🎓 Smart Classroom Exam Allocation Generator</h1>
+            <p>Automate exam seating arrangements for your college</p>
         </header>
 
         <div class="upload-section">
@@ -25,7 +25,6 @@
                             <span class="upload-icon">📄</span>
                             <span class="upload-text">Students CSV</span>
                             <span class="file-name" id="students-file-name">No file chosen</span>
-                            <span class="hint">Must include: Year, Branch, RollNumber, HandType</span>
                         </div>
                     </label>
                     <input type="file" id="students-csv" accept=".csv" hidden>
@@ -37,7 +36,6 @@
                             <span class="upload-icon">🏫</span>
                             <span class="upload-text">Classrooms CSV</span>
                             <span class="file-name" id="classrooms-file-name">No file chosen</span>
-                            <span class="hint">Must include: RoomID, Capacity, LeftSeats</span>
                         </div>
                     </label>
                     <input type="file" id="classrooms-csv" accept=".csv" hidden>
@@ -53,7 +51,7 @@
                 <button class="year-btn" data-year="3">3rd Year</button>
                 <button class="year-btn" data-year="4">4th Year</button>
             </div>
-            <p class="year-hint">⚠️ Different years will NOT be mixed in same classroom</p>
+            <p class="year-hint">Click to select multiple years</p>
         </div>
 
         <div class="action-section">
@@ -69,26 +67,26 @@
 
         <div id="results-section" style="display: none;">
             <div class="results-header">
-                <h2>📋 Seating Arrangement</h2>
+                <h2>Allocation Results</h2>
                 <div class="stats">
-                    <div class="stat-box">
-                        <span class="stat-label">Total Halls</span>
-                        <span class="stat-value" id="total-halls">0</span>
-                    </div>
                     <div class="stat-box">
                         <span class="stat-label">Total Students</span>
                         <span class="stat-value" id="total-students">0</span>
                     </div>
                     <div class="stat-box">
-                        <span class="stat-label">Date</span>
-                        <span class="stat-value" id="exam-date" style="font-size: 1em;">-</span>
+                        <span class="stat-label">Students Allocated</span>
+                        <span class="stat-value" id="allocated-students">0</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">Rooms Used</span>
+                        <span class="stat-value" id="rooms-used">0</span>
                     </div>
                 </div>
-                <button id="download-pdf-btn" class="download-btn">📥 Download PDF</button>
+                <button id="download-pdf-btn" class="download-btn">📥 Download as PDF</button>
             </div>
 
             <div id="allocation-table" class="allocation-table">
-                <!-- Table will be inserted here -->
+                <!-- Results will be inserted here -->
             </div>
         </div>
     </div>

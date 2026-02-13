@@ -16,7 +16,7 @@ def allocate_students_updated(students, classrooms, selected_years):
     Updated allocation with new constraints:
     1. Max 40 students per classroom (even if capacity > 40)
     2. No mixing of academic years in same classroom
-    3. Left-handed seating allocation
+    3. Left-handed seating allocation - AUTO-CALCULATED from students
     4. Full classroom utilization (fill to 40 before next room)
     5. Year-wise sequential allocation
     """
@@ -62,12 +62,10 @@ def allocate_students_updated(students, classrooms, selected_years):
         for branch in sorted_branches:
             branch_students = students_by_branch[branch]
             
-            # Separate left-handed and right-handed students
-            left_handed = [s for s in branch_students if s.get('HandType', 'R') == 'L']
-            right_handed = [s for s in branch_students if s.get('HandType', 'R') == 'R']
-            
             # Process this branch
-            while len(left_handed) > 0 or len(right_handed) > 0:
+            remaining_students = list(branch_students)
+            
+            while len(remaining_students) > 0:
                 if classroom_idx >= len(classrooms):
                     # Out of classrooms
                     return {
@@ -78,25 +76,14 @@ def allocate_students_updated(students, classrooms, selected_years):
                 classroom = classrooms[classroom_idx]
                 room_id = classroom['RoomID']
                 room_capacity = min(int(classroom['Capacity']), 40)  # Cap at 40
-                left_seats_available = int(classroom.get('LeftSeats', 0))
                 
-                # Allocate students to this room
+                # Allocate students to this room (up to capacity)
                 room_students = []
-                left_handed_count = 0
+                while len(remaining_students) > 0 and len(room_students) < room_capacity:
+                    room_students.append(remaining_students.pop(0))
                 
-                # First, allocate left-handed students (up to available left seats)
-                while len(left_handed) > 0 and left_handed_count < left_seats_available and len(room_students) < room_capacity:
-                    room_students.append(left_handed.pop(0))
-                    left_handed_count += 1
-                
-                # Then fill remaining capacity with right-handed students
-                while len(right_handed) > 0 and len(room_students) < room_capacity:
-                    room_students.append(right_handed.pop(0))
-                
-                # If there are still left-handed students but no left seats, add them anyway
-                while len(left_handed) > 0 and len(room_students) < room_capacity:
-                    room_students.append(left_handed.pop(0))
-                    left_handed_count += 1
+                # COUNT left-handed students in THIS room
+                left_handed_count = sum(1 for s in room_students if s.get('HandType', 'R') == 'L')
                 
                 # Create allocation entry
                 if len(room_students) > 0:

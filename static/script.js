@@ -101,17 +101,9 @@ function showError(message) {
 
 function displayResults(result) {
     // Update stats
-    document.getElementById('total-halls').textContent = result.rooms_used;
-    document.getElementById('total-students').textContent = result.total_allocated;
-    
-    // Set current date
-    const today = new Date();
-    const dateStr = today.toLocaleDateString('en-GB', { 
-        day: '2-digit', 
-        month: '2-digit', 
-        year: 'numeric' 
-    });
-    document.getElementById('exam-date').textContent = dateStr;
+    document.getElementById('total-students').textContent = result.total_students;
+    document.getElementById('allocated-students').textContent = result.total_allocated;
+    document.getElementById('rooms-used').textContent = result.rooms_used;
     
     // Build table HTML matching reference format
     let tableHTML = `

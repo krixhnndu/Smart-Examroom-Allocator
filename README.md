@@ -2,7 +2,7 @@
   <img src="./img.png" alt="Smart Exam Room Allocator" width="100%">
 </p>
 
-# Smart Exam Room Allocator 🎯
+# SEATFORGE🎯
 
 ## Basic Details
 
@@ -16,7 +16,7 @@
 [mention your project hosted link here]
 
 ### Project Description
-A smart web-based application that automates exam seating arrangements for colleges by efficiently allocating students to classrooms based on their academic year, branch, and special requirements like left-handed seating.
+A Smart Exam Room Allocator is a smart web-based application that automates exam seating arrangements for colleges by efficiently allocating students to classrooms based on their academic year, branch, and special requirements like left-handed seating.
 
 ### The Problem Statement
 Manual allocation of students to exam halls is time-consuming, error-prone, and often results in inefficient use of classroom capacity. Administrators face challenges in ensuring no mixing of academic years, proper distribution of students across departments, and accommodation of special seating requirements.
@@ -70,7 +70,7 @@ List the key features of your project:
 #### Installation
 ```bash
 # Clone the repository
-git clone [your-repo-link]
+git clone [https://github.com/krixhnndu/Smart-Examroom-Allocator]
 cd exam_final_multi
 
 # Install Python dependencies
@@ -308,7 +308,7 @@ FormData {
 ## Team Contributions
 
 - **Nandana G L**: Frontend development (HTML/CSS/JS), PDF generation implementation, UI/UX design, testing
-- **Krishnendu S Binu**: Backend development (Flask server, allocation algorithm), CSV processing logic, API development
+- **Krishnendu S Binu**: Backend development (Flask server, allocation algorithm), CSV processing logic
 - **Team**: Documentation, system integration, deployment preparation
 
 ---

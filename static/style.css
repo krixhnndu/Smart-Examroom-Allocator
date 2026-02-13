@@ -6,7 +6,7 @@
 
 body {
     font-family: 'Arial', 'Segoe UI', sans-serif;
-    background: linear-gradient(135deg, #09b2e6 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     min-height: 100vh;
     padding: 20px;
 }
@@ -24,10 +24,9 @@ body {
 
 header {
     text-align: center;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
     border-bottom: 3px solid #667eea;
     padding-bottom: 20px;
-    margin-bottom: 20px;
 }
 
 header h1 {
@@ -44,8 +43,7 @@ header p {
 /* ================= UPLOAD ================= */
 
 .upload-section {
-    margin-bottom: 20px;
-    margin-top: 5px;
+    margin-bottom: 30px;
 }
 
 .upload-section h2,
@@ -67,17 +65,12 @@ header p {
 
 .upload-box {
     border: 3px dashed #667eea;
-    border-radius: 10px;
+    border-radius: 15px;
     padding: 30px;
-    height: 100%;
-    align-items: center;
     text-align: center;
     cursor: pointer;
     transition: all 0.3s ease;
     background: #f8f9ff;
-    justify-content: center;
-    flex-direction: column;
-    display: flex;
 }
 
 .upload-box:hover {

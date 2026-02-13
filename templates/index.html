@@ -137,6 +137,8 @@
             </div>
 
             <button id="download-pdf-btn" class="download-btn">📥 Download PDF</button>
+            <button id="download-excel-btn" class="download-btn">Download Excel</button>
+
         </div>
 
         <div id="allocation-table" class="allocation-table">
@@ -147,5 +149,8 @@
 </div>
 
 <script src="{{ url_for('static', filename='script.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+
 </body>
 </html>

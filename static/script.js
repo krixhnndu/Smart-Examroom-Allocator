@@ -248,6 +248,70 @@ function formatTime(time24) {
     const hour12 = hour % 12 || 12;
     return `${hour12}:${m} ${suffix}`;
 }
+// ================= EXCEL DOWNLOAD =================
+document.getElementById('download-excel-btn').addEventListener('click', () => {
+    if (!currentAllocationData) return;
+
+    const wb = XLSX.utils.book_new();
+    const wsData = [];
+
+    // ===== HEADER BLOCK =====
+    wsData.push(['SCMS SCHOOL OF ENGINEERING AND TECHNOLOGY']);
+    wsData.push(['APJ ABDUL KALAM TECHNOLOGICAL UNIVERSITY']);
+    wsData.push(['Internal Examination – Seating Arrangement']);
+    wsData.push([]);
+
+    const dayName = getDayFromDate(examDateFinal);
+    wsData.push([`DATE : ${examDateFinal} (${dayName})`]);
+    wsData.push([`TIME : ${examTimeFinal}`]);
+    wsData.push([]);
+
+    // ===== TABLE HEADER =====
+    wsData.push([
+        'Room No.',
+        'Dept.',
+        'Roll No.',
+        'Total No. of Students',
+        'Left-Handed Chairs Required'
+    ]);
+
+    // ===== TABLE BODY (ROOM MERGED STYLE) =====
+    let lastRoom = null;
+    currentAllocationData.allocation.forEach(row => {
+        wsData.push([
+            row.room_id === lastRoom ? '' : row.room_id,
+            row.branch,
+            `${row.first_roll} to ${row.last_roll}`,
+            row.total_students,
+            row.left_handed_chairs || ''
+        ]);
+        lastRoom = row.room_id;
+    });
+
+    const ws = XLSX.utils.aoa_to_sheet(wsData);
+
+    // ===== COLUMN WIDTHS =====
+    ws['!cols'] = [
+        { wch: 12 },
+        { wch: 18 },
+        { wch: 32 },
+        { wch: 20 },
+        { wch: 28 }
+    ];
+
+    // ===== MERGE HEADER CELLS =====
+    ws['!merges'] = [
+        { s: { r:0, c:0 }, e: { r:0, c:4 } },
+        { s: { r:1, c:0 }, e: { r:1, c:4 } },
+        { s: { r:2, c:0 }, e: { r:2, c:4 } },
+        { s: { r:4, c:0 }, e: { r:4, c:4 } },
+        { s: { r:5, c:0 }, e: { r:5, c:4 } }
+    ];
+
+    XLSX.utils.book_append_sheet(wb, ws, 'Seating Arrangement');
+    XLSX.writeFile(wb, `Seating_Arrangement_${examDateFinal.replace(/\//g, '-')}.xlsx`);
+});
+
 
 function getDayFromDate(dateStr) {
     const [dd, mm, yyyy] = dateStr.split('/');

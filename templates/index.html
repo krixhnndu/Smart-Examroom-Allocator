@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Exam Allocator - Updated</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎓 SMART EXAM ALLOCATOR</h1>
+            <p>Automated Seating Arrangement System</p>
+        </header>
+
+        <div class="upload-section">
+            <h2>Upload CSV Files</h2>
+            
+            <div class="file-upload-container">
+                <div class="file-upload">
+                    <label for="students-csv">
+                        <div class="upload-box">
+                            <span class="upload-icon">📄</span>
+                            <span class="upload-text">Students CSV</span>
+                            <span class="file-name" id="students-file-name">No file chosen</span>
+                            <span class="hint">Must include: Year, Branch, RollNumber, HandType</span>
+                        </div>
+                    </label>
+                    <input type="file" id="students-csv" accept=".csv" hidden>
+                </div>
+
+                <div class="file-upload">
+                    <label for="classrooms-csv">
+                        <div class="upload-box">
+                            <span class="upload-icon">🏫</span>
+                            <span class="upload-text">Classrooms CSV</span>
+                            <span class="file-name" id="classrooms-file-name">No file chosen</span>
+                            <span class="hint">Must include: RoomID, Capacity, LeftSeats</span>
+                        </div>
+                    </label>
+                    <input type="file" id="classrooms-csv" accept=".csv" hidden>
+                </div>
+            </div>
+        </div>
+
+        <div class="year-selection">
+            <h2>Select Academic Year(s)</h2>
+            <div class="year-buttons">
+                <button class="year-btn" data-year="1">1st Year (S1)</button>
+                <button class="year-btn" data-year="3">3rd Year (S5)</button>
+                <button class="year-btn" data-year="5">5th Year (S7)</button>
+            </div>
+            <p class="year-hint">⚠️ Different years will NOT be mixed in same classroom</p>
+        </div>
+
+        <div class="action-section">
+            <button id="generate-btn" class="generate-btn">Generate Allocation</button>
+        </div>
+
+        <div id="loading" class="loading" style="display: none;">
+            <div class="spinner"></div>
+            <p>Generating allocation...</p>
+        </div>
+
+        <div id="error-message" class="error-message" style="display: none;"></div>
+
+        <div id="results-section" style="display: none;">
+            <div class="results-header">
+                <h2>📋 Seating Arrangement</h2>
+                <div class="stats">
+                    <div class="stat-box">
+                        <span class="stat-label">Total Halls</span>
+                        <span class="stat-value" id="total-halls">0</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">Total Students</span>
+                        <span class="stat-value" id="total-students">0</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">Date</span>
+                        <span class="stat-value" id="exam-date" style="font-size: 1em;">-</span>
+                    </div>
+                </div>
+                <button id="download-pdf-btn" class="download-btn">📥 Download PDF</button>
+            </div>
+
+            <div id="allocation-table" class="allocation-table">
+                <!-- Table will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

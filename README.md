@@ -13,7 +13,7 @@
 - Member 2: Krishnendu S Binu - SCMS School of Engineering & Technology
 
 ### Hosted Project Link
-[mention your project hosted link here]
+https://seatforge.onrender.com/
 
 ### Project Description
 A Smart Exam Room Allocator is a smart web-based application that automates exam seating arrangements for colleges by efficiently allocating students to classrooms based on their academic year, branch, and special requirements like left-handed seating.
@@ -46,6 +46,7 @@ Our Smart Exam Room Allocator automates the entire process with an intelligent a
   - VS Code (Development)
   - Git (Version Control)
   - Chrome DevTools (Testing & Debugging)
+  - Render (Deployment)
 
 ---
 
@@ -239,7 +240,7 @@ FormData {
 ## Project Demo
 
 ### Video
-[Add your demo video link here - YouTube, Google Drive, etc.]
+https://drive.google.com/file/d/1jLCdYSP2IXXMez62GFqmyzNi5hTyuhK1/view?usp=sharing
 
 *The video demonstrates:*
 - CSV file upload process
@@ -250,7 +251,7 @@ FormData {
 - Professional PDF export
 
 ### Additional Demos
-- **Live Demo:** [If deployed - add Heroku/Vercel/PythonAnywhere link]
+- **Live Demo:** https://seatforge.onrender.com/
 - **Sample CSV Files:** Included in repository (`students.csv`, `classrooms.csv`)
 - **Sample PDF Output:** Available in project documentation
 

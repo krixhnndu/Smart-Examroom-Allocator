@@ -96,7 +96,7 @@ python app.py
 
 ### For Software:
 
-#### Screenshots (Add at least 3)
+#### Screenshots 
 
 ![Upload Interface](images/Diagram1.png)
 *Main upload interface where users can upload students.csv and classrooms.csv files, and select academic years for allocation*

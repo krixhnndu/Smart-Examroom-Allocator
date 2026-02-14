@@ -71,7 +71,7 @@ List the key features of your project:
 #### Installation
 ```bash
 # Clone the repository
-git clone [https://github.com/krixhnndu/Smart-Examroom-Allocator]
+git clone [https://github.com/krixhnndu/SEATFORGE]
 cd exam_final_multi
 
 # Install Python dependencies

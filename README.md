@@ -98,14 +98,21 @@ python app.py
 
 #### Screenshots (Add at least 3)
 
-![Upload Interface](C:\Users\HP\Downloads\Smart-Examroom-Allocator\images\Diagram1.png)
+![Upload Interface](images/Diagram1.png)
 *Main upload interface where users can upload students.csv and classrooms.csv files, and select academic years for allocation*
 
-![Allocation Results](screenshots/results-table.png)
-*Generated allocation results showing multiple departments per classroom with student counts and left-handed chair requirements*
+![Constraint Settings](images/Diagram2.png)
+*Configure allocation rules including year separation, maximum 40 students per classroom, and left-handed seat requirements.*
 
-![PDF Output](screenshots/pdf-output.png)
+![Allocation Results](images/Diagram3.png)
+*Room-wise allocation displaying multiple departments per classroom along with student counts and required left-handed chairs.*
+
+![PDF Output](images/Diagram4.png)
 *Professional PDF report in university-standard format with detailed room-wise allocation and department sections*
+
+![Excel Output](images/Diagram5.png)
+*Exportable Excel sheet for administrative review and record management.*
+
 
 #### Diagrams
 

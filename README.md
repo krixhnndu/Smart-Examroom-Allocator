@@ -98,7 +98,7 @@ python app.py
 
 #### Screenshots (Add at least 3)
 
-![Upload Interface](screenshots/upload-screen.png)
+![Upload Interface](C:\Users\HP\Downloads\Smart-Examroom-Allocator\images\Diagram1.png)
 *Main upload interface where users can upload students.csv and classrooms.csv files, and select academic years for allocation*
 
 ![Allocation Results](screenshots/results-table.png)

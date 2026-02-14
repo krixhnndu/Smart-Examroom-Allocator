@@ -16,7 +16,7 @@
 https://seatforge.onrender.com/
 
 ### Project Description
-A Smart Exam Room Allocator is a smart web-based application that automates exam seating arrangements for colleges by efficiently allocating students to classrooms based on their academic year, branch, and special requirements like left-handed seating.
+SEATFORGE is a smart web-based exam room allocator that automates exam seating arrangements for colleges by efficiently allocating students to classrooms based on their academic year, branch, and special requirements like left-handed seating.
 
 ### The Problem Statement
 Manual allocation of students to exam halls is time-consuming, error-prone, and often results in inefficient use of classroom capacity. Administrators face challenges in ensuring no mixing of academic years, proper distribution of students across departments, and accommodation of special seating requirements.

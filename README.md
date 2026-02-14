@@ -101,14 +101,18 @@ python app.py
 ![Upload Interface](images/Diagram1.png)
 *Main upload interface where users can upload students.csv and classrooms.csv files, and select academic years for allocation*
 
+
 ![Constraint Settings](images/Diagram2.png)
 *Configure allocation rules including year separation, maximum 40 students per classroom, and left-handed seat requirements.*
+
 
 ![Allocation Results](images/Diagram3.png)
 *Room-wise allocation displaying multiple departments per classroom along with student counts and required left-handed chairs.*
 
+
 ![PDF Output](images/Diagram4.png)
 *Professional PDF report in university-standard format with detailed room-wise allocation and department sections*
+
 
 ![Excel Output](images/Diagram5.png)
 *Exportable Excel sheet for administrative review and record management.*
